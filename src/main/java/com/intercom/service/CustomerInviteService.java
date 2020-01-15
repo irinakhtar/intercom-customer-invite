@@ -5,6 +5,7 @@ import com.intercom.model.GpsLocation;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This service will be use to invite customers.

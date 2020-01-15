@@ -4,24 +4,24 @@ import com.google.gson.annotations.SerializedName;
 
 public class Customer {
     @SerializedName(value = "user_id")
-    private long userId;
+    private Long userId;
     private String name;
     private double latitude;
     private double longitude;
 
     public Customer(){}
-    public Customer(long userId, String name, float latitude, float longitude) {
+    public Customer(Long userId, String name, float latitude, float longitude) {
         this.userId = userId;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

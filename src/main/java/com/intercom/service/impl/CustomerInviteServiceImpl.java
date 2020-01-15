@@ -5,10 +5,14 @@ import com.intercom.model.Customer;
 import com.intercom.model.GpsLocation;
 import com.intercom.service.CustomerInviteService;
 
-import javax.imageio.IIOException;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+/**
+ *
+ */
 public class CustomerInviteServiceImpl implements CustomerInviteService {
 
     public ArrayList<Customer> inviteCustomerWithin100Km(String path, GpsLocation dublinOfficeLocation)
@@ -20,6 +24,7 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
                 customersWithin100Km.add(customer);
             }
         }
+        sortCustomerById(customersWithin100Km);
         return customersWithin100Km;
     }
 
@@ -98,4 +103,16 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
         return(c * r);
     }
 
+    /**
+     *
+     * @param customers
+     */
+    private void sortCustomerById(ArrayList<Customer> customers){
+        Collections.sort(customers, new Comparator<Customer>() {
+            @Override
+            public int compare(Customer customerOne, Customer customerTwo) {
+                return customerOne.getUserId().compareTo(customerTwo.getUserId());
+            }
+        });
+    }
 }
