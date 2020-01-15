@@ -1,6 +1,9 @@
 package com.intercom.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Customer {
+    @SerializedName(value = "user_id")
     private int userId;
     private String name;
     private float latitude;
@@ -43,5 +46,15 @@ public class Customer {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
