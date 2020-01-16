@@ -1,6 +1,7 @@
 package com.intercom.service.impl;
 
 import com.google.gson.Gson;
+import com.intercom.io.CustomerFileParser;
 import com.intercom.model.Customer;
 import com.intercom.model.GpsLocation;
 import com.intercom.service.CustomerInviteService;
@@ -16,20 +17,21 @@ import java.util.Comparator;
  */
 public class CustomerInviteServiceImpl implements CustomerInviteService {
 
-    BufferedReader bufferedReader;
-    FileInputStream fileInputStream;
-    Gson gson = new Gson();
+    private CustomerFileParser customerFileParser;
+
+    public CustomerInviteServiceImpl(CustomerFileParser customerFileParser) {
+        this.customerFileParser = customerFileParser;
+    }
 
     /**
      *
-     * @param path customer info file path
      * @param dublinOfficeLocation Gps location of dublin office - latitude and longitude
      * @return an ArrayList of customer, who are within 100km from dublin office
      * @throws IOException parseCustomerFromFile throws IO exception
      */
-    public ArrayList<Customer> inviteCustomerWithin100Km(String path, GpsLocation dublinOfficeLocation)
+    public ArrayList<Customer> inviteCustomerWithin100Km(GpsLocation dublinOfficeLocation)
             throws IOException {
-        ArrayList<Customer> customers = parseCustomerFromFile(path);
+        ArrayList<Customer> customers = customerFileParser.parseCustomerFromFile();
         ArrayList<Customer> customersWithin100Km = new ArrayList<Customer>();
         for(Customer customer: customers) {
             if(isWithin100Km(customer, dublinOfficeLocation)){
@@ -50,31 +52,6 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
         double distance = distance(customer.getLatitude(), dublinOfficeLocation.getLatitude(),
                 customer.getLongitude(), dublinOfficeLocation.getLongitude());
         return distance <= 100;
-    }
-
-    /**
-     * This method for read the file and parse the data of customer and also make a customer list
-     * @param path file location of customer data
-     * @return list of customer
-     * @throws IOException
-     */
-    private ArrayList<Customer> parseCustomerFromFile(String path) throws IOException {
-        ArrayList<Customer> customers = new ArrayList<Customer>();
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
-            String line;
-            while ((line = bufferedReader.readLine())!=null) {
-                Customer customer = gson.fromJson(line, Customer.class);
-                customers.add(customer);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-        }
-        return customers;
     }
 
     /**

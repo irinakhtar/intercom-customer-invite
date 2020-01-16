@@ -1,5 +1,6 @@
 package com.intercom;
 
+import com.intercom.io.CustomerFileParser;
 import com.intercom.model.Customer;
 import com.intercom.model.GpsLocation;
 import com.intercom.service.CustomerInviteService;
@@ -53,9 +54,8 @@ public class Application {
 //        String inputFile = "D:\\OnlineJavaCourse\\intercom-customer-invite\\src\\main\\resources\\customers.txt";
 //        double latitude = 53.339428;
 //        double longitude = -6.257664;
-        CustomerInviteService customerInviteService = new CustomerInviteServiceImpl();
-        ArrayList<Customer> customersWithin100Km = customerInviteService.inviteCustomerWithin100Km(
-                inputFile, new GpsLocation(latitude, longitude));
+        CustomerInviteService customerInviteService = new CustomerInviteServiceImpl(new CustomerFileParser(inputFile));
+        ArrayList<Customer> customersWithin100Km = customerInviteService.inviteCustomerWithin100Km(new GpsLocation(latitude, longitude));
 
 //        for(Customer customer: customersWithin100Km) {
 //            System.out.println(customer);

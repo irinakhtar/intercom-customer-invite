@@ -13,9 +13,8 @@ import java.util.Map;
 public interface CustomerInviteService {
     /**
      *
-     * @param path
      * @param dublinOfficeLocation
      * @return
      */
-    ArrayList<Customer> inviteCustomerWithin100Km(String path, GpsLocation dublinOfficeLocation) throws IOException;
+    ArrayList<Customer> inviteCustomerWithin100Km(GpsLocation dublinOfficeLocation) throws IOException;
 }
