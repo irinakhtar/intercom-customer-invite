@@ -4,13 +4,11 @@
 ## How to build and run
 ```$xslt
 mvn clean install
-java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Application <Input File> <Latitude> <Longitude>
+java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Application <input file> <Latitude> <Longitude> <output file>
 ```
 
 ## Example
 
 ```$xslt
-java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Application src\main\resources\customers.txt 53.339428 -6.257664 D:\JavaProject\ou
-tput.txt
-
+java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Application customers.txt 53.339428 -6.257664 output.txt
 ```

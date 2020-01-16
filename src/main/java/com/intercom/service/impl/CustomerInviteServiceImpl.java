@@ -1,9 +1,7 @@
 package com.intercom.service.impl;
 
-import com.google.gson.Gson;
 import com.intercom.io.CustomerFileParser;
 import com.intercom.model.Customer;
-import com.intercom.model.GpsLocation;
 import com.intercom.service.CustomerInviteService;
 
 import java.io.*;
@@ -12,8 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Implementation of CustomerInviteService
- * from customer info calculate the distance of customer from the office and if distance between 100 km than make a list of customer
+ * An implementation of CustomerInviteService.
  */
 public class CustomerInviteServiceImpl implements CustomerInviteService {
 
@@ -24,17 +21,20 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
     }
 
     /**
+     * This method makes a list of Customer (sorted by id) who are within 100km from
+     * given Geo location (latitude and longitude).
      *
-     * @param dublinOfficeLocation Gps location of dublin office - latitude and longitude
-     * @return an ArrayList of customer, who are within 100km from dublin office
-     * @throws IOException parseCustomerFromFile throws IO exception
+     * @param latitude represents the latitude of a given Geo Location.
+     * @param longitude represents the longitude of a given Geo Location.
+     * @return an ArrayList of customer, who are within 100km from the given Geo Location.
+     * @throws IOException an Exception.
      */
-    public ArrayList<Customer> inviteCustomerWithin100Km(GpsLocation dublinOfficeLocation)
+    public ArrayList<Customer> inviteCustomerWithin100Km(double latitude, double longitude)
             throws IOException {
         ArrayList<Customer> customers = customerFileParser.parseCustomerFromFile();
         ArrayList<Customer> customersWithin100Km = new ArrayList<Customer>();
         for(Customer customer: customers) {
-            if(isWithin100Km(customer, dublinOfficeLocation)){
+            if(isWithin100Km(customer, latitude, longitude)){
                 customersWithin100Km.add(customer);
             }
         }
@@ -43,48 +43,45 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
     }
 
     /**
-     * This method call the distance method and make decision is this customer within 100km or not from dublin office
-     * @param customer info of one customer
-     * @param dublinOfficeLocation is gps location of dublin office - latitude and longitude
+     * This method checks if the given customer within 100km or not from a given Geo location.
+     * @param customer an instance of a Customer class.
+     * @param latitude represents the latitude of a given Geo Location.
+     * @param longitude represents the longitude of a given Geo Location.
      * @return true or false for is this customer within 100km or not from dublin office
      */
-    private boolean isWithin100Km(Customer customer, GpsLocation dublinOfficeLocation) {
+    private boolean isWithin100Km(Customer customer, double latitude, double longitude) {
         double distance = distance(customer.getLatitude(), customer.getLongitude(),
-                dublinOfficeLocation.getLatitude(), dublinOfficeLocation.getLongitude());
+                latitude, longitude);
         return distance <= 100;
     }
 
     /**
+     * This method calculates the distance (in Kilometre) between given two Geo locations.
      *
-     * @param officeLat Gps location latitude of office
-     * @param officeLong Gps location longitude of office
-     * @param customerLat Gps location latitude of customer
-     * @param customerLong Gps location longitude of customer
-     * @return a distance value of office and customer
+     * @param givenLatitude Gps location latitude of office
+     * @param givenLongitude Gps location longitude of office
+     * @param customerLatitude Gps location latitude of customer
+     * @param customerLongitude Gps location longitude of customer
+     * @return a distance in kilometre.
      */
-    private double distance(double officeLat, double officeLong, double customerLat, double customerLong)
+    private double distance(double givenLatitude, double givenLongitude,
+                            double customerLatitude, double customerLongitude)
     {
-        // Radius of earth in kilometers 6371
-        double r = 6371;
-        // The math module contains a function
-        // named toRadians which converts from
-        // degrees to radians.
-        officeLat = Math.toRadians(officeLat);
-        officeLong = Math.toRadians(officeLong);
-        customerLat = Math.toRadians(customerLat);
-        customerLong = Math.toRadians(customerLong);
+        final double earthRadius = 6371;
 
-        // Haversine formula
-        double dlat = customerLat - officeLat;
-        double dlon = customerLong - officeLong;
-        double a = Math.pow(Math.sin(dlat / 2), 2)
-                + Math.cos(officeLat) * Math.cos(customerLat)
-                * Math.pow(Math.sin(dlon / 2),2);
+        givenLatitude = Math.toRadians(givenLatitude);
+        givenLongitude = Math.toRadians(givenLongitude);
+        customerLatitude = Math.toRadians(customerLatitude);
+        customerLongitude = Math.toRadians(customerLongitude);
 
+        double diffLatitude = customerLatitude - givenLatitude;
+        double diffLongitude = customerLongitude - givenLongitude;
+        double a = Math.pow(Math.sin(diffLatitude / 2), 2)
+                + Math.cos(givenLatitude) * Math.cos(customerLatitude)
+                * Math.pow(Math.sin(diffLongitude / 2),2);
         double c = 2 * Math.asin(Math.sqrt(a));
 
-        // calculate the result
-        return(c * r);
+        return(c * earthRadius);
     }
 
     /**
