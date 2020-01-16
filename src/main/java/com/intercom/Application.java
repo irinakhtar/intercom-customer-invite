@@ -9,6 +9,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Application {
+    /**
+     *
+     * @param outFile for output file location path with file name
+     * @param customers list of customers 
+     * @throws IOException
+     */
     public static void writeToFile(String outFile, ArrayList<Customer> customers) throws IOException {
         BufferedWriter bufferedWriter = null;
         try {
@@ -41,7 +47,6 @@ public class Application {
         CustomerInviteService customerInviteService = new CustomerInviteServiceImpl();
         ArrayList<Customer> customersWithin100Km = customerInviteService.inviteCustomerWithin100Km(
                 inputFile, new GpsLocation(latitude, longitude));
-
 
         for(Customer customer: customersWithin100Km) {
             System.out.println(customer);

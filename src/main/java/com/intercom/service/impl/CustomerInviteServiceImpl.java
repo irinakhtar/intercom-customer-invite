@@ -15,6 +15,10 @@ import java.util.Comparator;
  */
 public class CustomerInviteServiceImpl implements CustomerInviteService {
 
+    BufferedReader bufferedReader;
+    FileInputStream fileInputStream;
+    Gson gson = new Gson();
+
     public ArrayList<Customer> inviteCustomerWithin100Km(String path, GpsLocation dublinOfficeLocation)
             throws IOException {
         ArrayList<Customer> customers = parseCustomerFromFile(path);
@@ -48,21 +52,18 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
      */
     private ArrayList<Customer> parseCustomerFromFile(String path) throws IOException {
         ArrayList<Customer> customers = new ArrayList<Customer>();
-        BufferedReader br = null;
-
-        Gson gson = new Gson();
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
             String line;
-            while ((line = br.readLine())!=null) {
+            while ((line = bufferedReader.readLine())!=null) {
                 Customer customer = gson.fromJson(line, Customer.class);
                 customers.add(customer);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (br != null) {
-                br.close();
+            if (bufferedReader != null) {
+                bufferedReader.close();
             }
         }
         return customers;
