@@ -10,6 +10,7 @@ java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Ap
 ## Example
 
 ```$xslt
-java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Application src\main\resources\customers.txt 53.339428 -6.257664
+java -cp target\intercom-customer-invite-1.0-SNAPSHOT-shaded.jar com.intercom.Application src\main\resources\customers.txt -6.257664 53.339428 D:\JavaProject\ou
+tput.txt
 
 ```
