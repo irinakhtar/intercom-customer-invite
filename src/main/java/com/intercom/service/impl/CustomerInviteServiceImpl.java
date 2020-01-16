@@ -49,8 +49,8 @@ public class CustomerInviteServiceImpl implements CustomerInviteService {
      * @return true or false for is this customer within 100km or not from dublin office
      */
     private boolean isWithin100Km(Customer customer, GpsLocation dublinOfficeLocation) {
-        double distance = distance(customer.getLatitude(), dublinOfficeLocation.getLatitude(),
-                customer.getLongitude(), dublinOfficeLocation.getLongitude());
+        double distance = distance(customer.getLatitude(), customer.getLongitude(),
+                dublinOfficeLocation.getLatitude(), dublinOfficeLocation.getLongitude());
         return distance <= 100;
     }
 

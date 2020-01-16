@@ -51,15 +51,15 @@ public class Application {
         double latitude = Double.parseDouble(args[1]);
         double longitude = Double.parseDouble(args[2]);
         String outFile = args[3];
-//        String inputFile = "D:\\OnlineJavaCourse\\intercom-customer-invite\\src\\main\\resources\\customers.txt";
-//        double latitude = 53.339428;
-//        double longitude = -6.257664;
-        CustomerInviteService customerInviteService = new CustomerInviteServiceImpl(new CustomerFileParser(inputFile));
-        ArrayList<Customer> customersWithin100Km = customerInviteService.inviteCustomerWithin100Km(new GpsLocation(latitude, longitude));
 
-//        for(Customer customer: customersWithin100Km) {
-//            System.out.println(customer);
-//        }
+        CustomerInviteService customerInviteService = new CustomerInviteServiceImpl(new CustomerFileParser(inputFile));
+        ArrayList<Customer> customersWithin100Km = customerInviteService
+                .inviteCustomerWithin100Km(new GpsLocation(latitude, longitude));
+
         writeToFile(outFile, customersWithin100Km);
     }
+
+    //        String inputFile = "D:\\OnlineJavaCourse\\intercom-customer-invite\\src\\main\\resources\\customers.txt";
+    //        double latitude = 53.339428;
+    //        double longitude = -6.257664;
 }
